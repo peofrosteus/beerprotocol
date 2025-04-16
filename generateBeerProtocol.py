@@ -4,6 +4,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
 from reportlab.pdfgen import canvas
 from reportlab.lib.utils import simpleSplit
+from reportlab.pdfbase.pdfmetrics import stringWidth
 
 # Beer-data
 beers = [
@@ -36,6 +37,12 @@ positions = [
     (page_width / 2, 0)
 ]
 
+def draw_header(c, text):
+    c.setFont("Helvetica-Bold", 16)
+    text_width = stringWidth(text, "Helvetica-Bold", 16)
+    center_x = (page_width - text_width) / 2
+    c.drawString(center_x, page_height - 15 * mm, text)
+
 # Funktion för att rita en betygsrad med checkboxar
 def draw_rating_row(c, label, x, y):
     box_size = 4 * mm
@@ -45,7 +52,7 @@ def draw_rating_row(c, label, x, y):
     for i in range(5):
         c.rect(x + offset + i * spacing, y - 2, box_size, box_size)
 
-# Rita en sektion i en A6-ruta
+# Rita en ölsektion i en A6-ruta
 def draw_a6_section(c, x, y, beer):
     margin = 10 * mm
     start_x = x + margin
@@ -90,11 +97,21 @@ def draw_a6_section(c, x, y, beer):
         start_y -= line_height
         c.line(start_x, start_y, start_x + max_width, start_y)
 
+# Draw header on the first page
+draw_header(c, header_text)
+
+# Adjust starting position for the first page to account for header
+first_page_offset = 20 * mm
+
 # Rita alla öl, fyra per sida
 for idx, beer in enumerate(beers):
-    pos = positions[idx % 4]
-    draw_a6_section(c, pos[0], pos[1], beer)
-    if (idx + 1) % 4 == 0 and idx + 1 < len(beers):
+    if idx > 0 and idx % 4 == 0:
         c.showPage()
+        first_page_offset = 0  # Reset offset for subsequent pages
+    
+    pos = positions[idx % 4]
+    # Adjust y-position for the first page
+    adjusted_y = pos[1] - first_page_offset if idx < 4 else pos[1]
+    draw_a6_section(c, pos[0], adjusted_y, beer)
 
 c.save()
