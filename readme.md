@@ -1,1 +1,3 @@
-Enkelt python-skript för ölprovning
+Enkelt python-skript fÃ¶r Ã–lprovning
+
+Ange info i beers-arrayen och kÃ¶r skriptet, output hamnar i beerProtocol.pdf
