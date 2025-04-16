@@ -64,7 +64,7 @@ def draw_a6_section(c, x, y, beer):
 
     c.setFont("Helvetica-Bold", 12)
     c.drawString(start_x, start_y, f"{beer['namn']}")
-    c.setFont("Helvetica", 10)
+    c.setFont("Helvetica", 8)
     start_y -= line_height
     c.drawString(start_x, start_y, f"{beer['typ']}")
 
@@ -89,13 +89,10 @@ def draw_a6_section(c, x, y, beer):
         c.drawString(start_x, start_y, line)
         start_y -= line_height
 
-    # Adjust the number of comment lines based on remaining space
-    remaining_space = start_y - y - margin
-    num_comment_lines = max(0, int(remaining_space / line_height))
+    start_y -= line_height * 0.5    
+    c.setFont("Helvetica-Bold", 12)
+    c.drawString(start_x, start_y, f"Kommentar:")
 
-    for _ in range(num_comment_lines):
-        start_y -= line_height
-        c.line(start_x, start_y, start_x + max_width, start_y)
 
 # Draw header on the first page
 draw_header(c, header_text)
