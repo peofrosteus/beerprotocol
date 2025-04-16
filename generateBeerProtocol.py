@@ -8,17 +8,17 @@ from reportlab.pdfbase.pdfmetrics import stringWidth
 
 # Beer-data
 beers = [
-    {"namn": "Fjäderholmarnas Hazy IPA", "typ": "IPA", "description": "Humlearomatisk smak med tydlig beska, inslag av grapefrukt, tallbarr, ljust bröd, ananas och örter."},
-    {"namn": "Skärpning på alla plan", "typ": "Pilsner", "description": "Maltig smak med tydlig beska, inslag av knäckebröd, timjan, honung och citrusskal."},
-    {"namn": "Sleipnir II", "typ": "Pale Ale", "description": "Maltig smak med tydlig beska, inslag av sirapslimpa, knäck, aprikos och apelsin."},
-    {"namn": "Oden", "typ": "Lager", "description": "Maltig smak med tydlig beska, inslag av ljust knäckebröd, timjan och citrusskal."},
-    {"namn": "Golden Hoppies", "typ": "IPA", "description": "Fruktig smak med tydlig beska, inslag av passionsfrukt, ananas, honung, nektarin, rosmarin och grapefrukt."},
-    {"namn": "C4", "typ": "Double IPA", "description": "Humlearomatisk smak med tydlig beska och liten sötma, inslag av mango, grapefrukt, honung, tallbarr och sockerkaka. "},
-    {"namn": "Islay Whisky Cask Beer", "typ": "Amber Ale", "description": "Maltig, rökig smak med liten sötma och fatkaraktär, inslag av kavring, dadlar, tjära, mörk choklad, kanel, charkuterier och honung."},
-    {"namn": "Dellinger", "typ": "IPA", "description": "Fruktig smak med tydlig beska och liten sötma, inslag av papaya, sirapslimpa, apelsinskal och aprikos."},
+    {"namn": "Fjäderholmarnas Hazy IPA", "typ": "IPA", "brewery": "Fjärderholmarnas Bryggeri", "description": "Humlearomatisk smak med tydlig beska, inslag av grapefrukt, tallbarr, ljust bröd, ananas och örter."},
+    {"namn": "Skärpning på alla plan", "typ": "Pilsner", "brewery": "Fjärderholmarnas Bryggeri", "description": "Maltig smak med tydlig beska, inslag av knäckebröd, timjan, honung och citrusskal."},
+    {"namn": "Sleipnir II", "typ": "Pale Ale", "brewery": "Keane Brewing", "description": "Maltig smak med tydlig beska, inslag av sirapslimpa, knäck, aprikos och apelsin."},
+    {"namn": "Oden", "typ": "Lager", "brewery": "Keane Brewing", "description": "Maltig smak med tydlig beska, inslag av ljust knäckebröd, timjan och citrusskal."},
+    {"namn": "Golden Hoppies", "typ": "IPA", "brewery": "Hop Notch Brewing", "description": "Fruktig smak med tydlig beska, inslag av passionsfrukt, ananas, honung, nektarin, rosmarin och grapefrukt."},
+    {"namn": "C4", "typ": "Double IPA", "brewery": "Hop Notch Brewing", "description": "Humlearomatisk smak med tydlig beska och liten sötma, inslag av mango, grapefrukt, honung, tallbarr och sockerkaka. "},
+    {"namn": "Islay Whisky Cask Beer", "brewery": "Innis & Gunn", "typ": "Amber Ale", "description": "Maltig, rökig smak med liten sötma och fatkaraktär, inslag av kavring, dadlar, tjära, mörk choklad, kanel, charkuterier och honung."},
+    {"namn": "Dellinger", "typ": "IPA", "brewery": "Keane Brewing", "description": "Fruktig smak med tydlig beska och liten sötma, inslag av papaya, sirapslimpa, apelsinskal och aprikos."},
 ]
 
-header_text = "Ölprotokoll 2025-04-26"
+header_text = "Ölprovning 2025-04-26"
 
 # PDF-inställningar
 pdf_path = "beerProtocol.pdf"
@@ -66,7 +66,7 @@ def draw_a6_section(c, x, y, beer):
     c.drawString(start_x, start_y, f"{beer['namn']}")
     c.setFont("Helvetica", 8)
     start_y -= line_height
-    c.drawString(start_x, start_y, f"{beer['typ']}")
+    c.drawString(start_x, start_y, f"{beer['typ']} - {beer['brewery']}")
 
     start_y -= line_height * 1.5
     draw_rating_row(c, "Färg", start_x, start_y)
