@@ -5,6 +5,7 @@ from reportlab.lib.units import mm
 from reportlab.pdfgen import canvas
 from reportlab.lib.utils import simpleSplit
 from reportlab.pdfbase.pdfmetrics import stringWidth
+from datetime import datetime
 
 # Beer-data
 beers = [
@@ -19,17 +20,19 @@ beers = [
 ]
 
 header_text = "Ölprovning 2025-04-26"
+now = datetime.now()
+currentTimestamp = now.strftime("%Y-%m-%d %H:%M:%S")
 
-# PDF-inställningar
-pdf_path = "beerProtocol.pdf"
+# PDF-settings
+pdf_path = "beerProtocol " +currentTimestamp +".pdf"
 c = canvas.Canvas(pdf_path, pagesize=A4)
 page_width, page_height = A4
 
-# A6-dimensioner inom A4
+# A6-dimensions in A4
 a6_width = page_width / 2
 a6_height = page_height / 2
 
-# Koordinater för fyra A6-rutor per A4
+# A6 coordinates
 positions = [
     (0, page_height / 2),
     (page_width / 2, page_height / 2),
@@ -43,16 +46,16 @@ def draw_header(c, text):
     center_x = (page_width - text_width) / 2
     c.drawString(center_x, page_height - 15 * mm, text)
 
-# Funktion för att rita en betygsrad med checkboxar
+# Draw checkbox rating rows
 def draw_rating_row(c, label, x, y):
     box_size = 4 * mm
     spacing = 8 * mm
-    offset = 70  # justerad position
+    offset = 70  
     c.drawString(x, y, label)
     for i in range(5):
         c.rect(x + offset + i * spacing, y - 2, box_size, box_size)
 
-# Rita en ölsektion i en A6-ruta
+# Draw each section
 def draw_a6_section(c, x, y, beer):
     margin = 10 * mm
     start_x = x + margin
@@ -100,14 +103,13 @@ draw_header(c, header_text)
 # Adjust starting position for the first page to account for header
 first_page_offset = 20 * mm
 
-# Rita alla öl, fyra per sida
+# Draw four beers per page
 for idx, beer in enumerate(beers):
     if idx > 0 and idx % 4 == 0:
         c.showPage()
-        first_page_offset = 0  # Reset offset for subsequent pages
+        first_page_offset = 0  
     
     pos = positions[idx % 4]
-    # Adjust y-position for the first page
     adjusted_y = pos[1] - first_page_offset if idx < 4 else pos[1]
     draw_a6_section(c, pos[0], adjusted_y, beer)
 
